@@ -2,14 +2,11 @@
 
 Repo này gom tài liệu và bản mẫu để áp dụng **Open Knowledge Format v0.2** (Google Cloud) vào dự án SaaS về đăng ký chứng từ (denpyo) và quyết toán thuế.
 
-> Tên đúng là **OKF**, không phải KOF.
-
 ## Nội dung
 
 ```
 .
 ├── README.md                      # file này
-├── OKF-cho-du-an-QA.md            # OKF là gì, có áp dụng được không, cấu trúc đề xuất, lộ trình
 └── okf-sample-invoiceshelf/       # bundle mẫu dựng từ dự án mã nguồn mở InvoiceShelf
     ├── HUONG-DAN.md               # hướng dẫn đọc bundle, ánh xạ sang dự án thật, giới hạn
     ├── tools/check_bundle.py      # script kiểm tra conformance, link, footnote
@@ -18,9 +15,8 @@ Repo này gom tài liệu và bản mẫu để áp dụng **Open Knowledge Form
 
 ## Nên đọc theo thứ tự
 
-1. `OKF-cho-du-an-QA.md`: khái niệm, cấu trúc đề xuất, các giai đoạn triển khai.
-2. `okf-sample-invoiceshelf/HUONG-DAN.md`: cách bundle mẫu được làm và cách ánh xạ sang dự án của bạn.
-3. `okf-sample-invoiceshelf/bundle/index.md`, rồi `domain/business-rules/balance-recalculation.md`, `testing/good-vs-bad-tc.md`, `regression-map/payment-allocation-change.md`.
+1. `okf-sample-invoiceshelf/HUONG-DAN.md`: cách bundle mẫu được làm và cách ánh xạ sang dự án của bạn.
+2. `okf-sample-invoiceshelf/bundle/index.md`, rồi `domain/business-rules/balance-recalculation.md`, `testing/good-vs-bad-tc.md`, `regression-map/payment-allocation-change.md`.
 
 ## Tóm tắt nhanh về OKF
 
