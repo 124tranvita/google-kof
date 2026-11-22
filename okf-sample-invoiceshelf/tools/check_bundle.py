@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Kiểm tra một Knowledge Bundle theo OKF v0.2 (conformance §11) và vài quy ước thêm.
 
-Cách chạy:  python3 -I check_bundle.py <thư-mục-bundle>
+Cách chạy:  python3 -I check_bundle.py [--review-list] <thư-mục-bundle>
+  --review-list: chỉ in danh sách concept cần rà lại (không có `verified`, `verified` cũ hơn
+  commit cuối của file, hoặc quá `stale_after`). Chỉ báo cáo, luôn thoát mã 0.
 Nên cài PyYAML (pip install pyyaml) để parse YAML đầy đủ. Nếu không có, script chạy
 ở chế độ dự phòng: chỉ đọc các khóa cấp cao nhất bằng regex, không bắt được lỗi cú pháp YAML.
 
@@ -9,7 +11,9 @@ Lỗi (ERROR) = vi phạm conformance của spec. Cảnh báo (WARN) = quy ướ
 Mã thoát 1 nếu có ERROR.
 """
 import re
+import subprocess
 import sys
+from datetime import date, datetime
 from pathlib import Path
 
 try:
@@ -61,6 +65,49 @@ def resolve(bundle, cur, target):
     if p.is_dir():
         return (p / "index.md").exists()
     return p.exists()
+
+
+def to_date(s):
+    try:
+        return datetime.fromisoformat(str(s).strip().replace("Z", "+00:00")).date()
+    except ValueError:
+        return None
+
+
+def review_list(root):
+    """Liệt kê concept cần rà lại. So theo NGÀY: commit ghi lại việc xác nhận thường đến sau
+    `verified.at` vài giờ, so theo giờ sẽ báo nhầm mọi file."""
+    bundle = Path(root).resolve()
+    today = date.today()
+    groups = {"chưa có `verified`": [], "đã đổi sau lần `verified` cuối": [], "quá `stale_after`": [], "không đọc được ngày commit (chưa commit?)": []}
+    for f in sorted(bundle.rglob("*.md")):
+        if f.name in RESERVED:
+            continue
+        rel = f.relative_to(bundle)
+        m = FM_RE.match(f.read_text(encoding="utf-8"))
+        raw = m.group(1) if m else ""
+        vm = re.search(r"^verified:(.*?)(?=^\S|\Z)", raw, re.S | re.M)
+        vdates = [d for d in (to_date(x) for x in re.findall(r"\bat:\s*([0-9][^\s,}]*)", vm.group(1))) if d] if vm else []
+        sm = re.search(r"^stale_after:\s*\"?([^\s\"]+)", raw, re.M)
+        stale = to_date(sm.group(1)) if sm else None
+        if stale and stale < today:
+            groups["quá `stale_after`"].append(f"{rel} (hạn {stale})")
+        if not vdates:
+            groups["chưa có `verified`"].append(str(rel))
+            continue
+        out = subprocess.run(["git", "log", "-1", "--format=%cI", "--", f.name], cwd=f.parent, capture_output=True, text=True)
+        c = to_date(out.stdout) if out.returncode == 0 and out.stdout.strip() else None
+        if c is None:
+            groups["không đọc được ngày commit (chưa commit?)"].append(str(rel))
+        elif c > max(vdates):
+            groups["đã đổi sau lần `verified` cuối"].append(f"{rel} (verified {max(vdates)}, commit {c})")
+    for title, items in groups.items():
+        if items:
+            print(f"## {title}: {len(items)}")
+            for i in items:
+                print(f"- {i}")
+            print()
+    return 0
 
 
 def main(root):
@@ -129,6 +176,9 @@ def main(root):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    args = sys.argv[1:]
+    if len(args) == 2 and args[0] == "--review-list":
+        sys.exit(review_list(args[1]))
+    if len(args) != 1:
         sys.exit(__doc__)
-    sys.exit(main(sys.argv[1]))
+    sys.exit(main(args[0]))

@@ -109,6 +109,14 @@ python3 -I tools/check_bundle.py bundle
 
 Kiểm tra: mọi concept có `type`, `index.md` ngoài gốc không có frontmatter, footnote đã định nghĩa và khớp `sources[].id`, link nội bộ không hỏng. Cài `pyyaml` để script parse YAML đầy đủ. Lần chạy gần nhất: 35 concept, 0 lỗi, và bằng `js-yaml` cũng 0 lỗi cú pháp. Một bài học khi làm: `description` chứa dấu `: ` phải đặt trong ngoặc kép, nếu không YAML sai.
 
+**Danh sách cần rà lại:**
+
+```bash
+python3 -I tools/check_bundle.py --review-list bundle
+```
+
+In các concept (1) chưa có `verified`, (2) có commit mới hơn lần `verified` cuối, (3) quá `stale_after`. Chỉ báo cáo, luôn thoát mã 0. So theo **ngày**, không theo giờ, vì commit ghi lại việc xác nhận luôn đến sau `verified.at`. Cần chạy trong repo git để lấy ngày commit.
+
 ## 9. Chỉnh sửa so với file trước
 
 File `OKF-cho-du-an-QA.md` mình viết trước khi đọc spec gốc. Sau khi đọc, mình đã cập nhật: phiên bản hiện là **v0.2** (không phải v0.1), `timestamp` được thay bằng `generated.at`, danh sách nguồn là `sources` (không phải `source`), link nên dùng dạng tuyệt đối `/path.md`, và `index.md` / `log.md` là tên dành riêng.
