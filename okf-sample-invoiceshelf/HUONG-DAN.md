@@ -1,12 +1,15 @@
 # Bundle OKF mẫu: InvoiceShelf (Hóa đơn – Thanh toán – Thuế)
 
+Tiếng Việt · [English](GUIDE.en.md)
+
 Thư mục này là ví dụ để bạn tham khảo cách dựng knowledge base theo **Open Knowledge Format v0.2** cho công việc QA. Nó **không phải** knowledge của dự án bạn.
 
 ```
 okf-sample-invoiceshelf/
 ├── HUONG-DAN.md            # file này (nằm ngoài bundle)
 ├── tools/check_bundle.py   # script kiểm tra bundle theo spec
-└── bundle/                 # ← đây mới là Knowledge Bundle (35 concept)
+├── bundle-en/              # bản dịch tiếng Anh của bundle (cùng cấu trúc)
+└── bundle/                 # ← đây mới là Knowledge Bundle gốc (35 concept)
     ├── index.md            # mục lục gốc, khai báo okf_version: "0.2"
     ├── log.md              # nhật ký thay đổi
     ├── domain/             # glossary, business-rules, workflows

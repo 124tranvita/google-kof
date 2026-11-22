@@ -1,5 +1,7 @@
 # Tìm hiểu OKF (Open Knowledge Format) cho knowledge base của dự án QA
 
+🇻🇳 Tiếng Việt · [🇬🇧 English](README.en.md)
+
 Repo này gom tài liệu và bản mẫu để áp dụng **Open Knowledge Format v0.2** (Google Cloud) vào dự án SaaS về đăng ký chứng từ (denpyo) và quyết toán thuế.
 
 ## Nội dung
@@ -9,8 +11,10 @@ Repo này gom tài liệu và bản mẫu để áp dụng **Open Knowledge Form
 ├── README.md                      # file này
 └── okf-sample-invoiceshelf/       # bundle mẫu dựng từ dự án mã nguồn mở InvoiceShelf
     ├── HUONG-DAN.md               # hướng dẫn đọc bundle, ánh xạ sang dự án thật, giới hạn
+    ├── GUIDE.en.md                # bản tiếng Anh của HUONG-DAN.md
     ├── tools/check_bundle.py      # script kiểm tra conformance, link, footnote
-    └── bundle/                    # Knowledge Bundle (35 concept)
+    ├── bundle/                    # Knowledge Bundle (35 concept, tiếng Việt, bản gốc)
+    └── bundle-en/                 # bản dịch tiếng Anh của bundle (cùng cấu trúc)
 ```
 
 ## Nên đọc theo thứ tự
@@ -54,6 +58,7 @@ Lần chạy gần nhất: 35 concept, 0 lỗi. Cài `pyyaml` để parse YAML �
 
 ## Lưu ý
 
+- Có bản tiếng Anh cho `README`, hướng dẫn (`GUIDE.en.md`) và bundle (`bundle-en/`). **Bản gốc là `bundle/` (tiếng Việt)**; khi sửa nội dung, sửa bản gốc trước rồi cập nhật `bundle-en/`. Hai bản chưa có công cụ tự đồng bộ.
 - Bundle mẫu là **bản nháp do AI sinh từ mã nguồn, chưa ai duyệt** (`status: draft`, không có `verified`), và chưa chạy ứng dụng thật. Nó **không phải** knowledge của dự án bạn.
 - Không đưa mã nguồn, DB hay spec của khách hàng vào công cụ AI bên ngoài khi chưa kiểm tra chính sách công ty. Không đưa dữ liệu thật vào bundle.
 
